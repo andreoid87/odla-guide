@@ -10,10 +10,10 @@ window.GUI_GUIDE_DATA = {
           id: "apps-tabs",
           title: "Barra App",
           text: "Qui selezioni l'app che stai configurando. Il pulsante + crea una nuova app, mentre le icone a destra servono per esportare o importare configurazioni.",
-          x: 1.2,
-          y: 2.1,
-          width: 97.2,
-          height: 5.4
+          x: 1.0,
+          y: 3.0,
+          width: 98.0,
+          height: 5.0
         },
         {
           id: "keys-mode",
@@ -37,19 +37,19 @@ window.GUI_GUIDE_DATA = {
           id: "bindings-table",
           title: "Tabella associazioni",
           text: "Mostra tutte le combinazioni di tasti fisici già configurate, il comando collegato e le note. Da qui selezioni una riga da modificare, scambiare o eliminare.",
-          x: 1.8,
-          y: 14.2,
-          width: 49.2,
-          height: 78.3
+          x: 1.5,
+          y: 14.1,
+          width: 49.6,
+          height: 79.2
         },
         {
           id: "keyboard-preview",
           title: "Anteprima tastiera ODLA",
           text: "La tastiera a destra aiuta a capire visivamente i tasti coinvolti. È utile durante la cattura delle combinazioni o per orientarsi nella disposizione dei controlli.",
-          x: 52.1,
-          y: 14.4,
-          width: 46.1,
-          height: 78.1
+          x: 52.0,
+          y: 14.1,
+          width: 46.0,
+          height: 79.0
         }
       ]
     },
@@ -135,9 +135,9 @@ window.GUI_GUIDE_DATA = {
           title: "Conferma",
           text: "OK salva la nuova app, Cancel chiude il dialog senza applicare modifiche.",
           x: 72.0,
-          y: 78.0,
+          y: 76.5,
           width: 27.0,
-          height: 19.0
+          height: 17.0
         }
       ]
     },
@@ -169,10 +169,10 @@ window.GUI_GUIDE_DATA = {
           id: "edit-app-actions",
           title: "Salvataggio",
           text: "OK conferma le modifiche dell'app. Cancel annulla le variazioni.",
-          x: 59.0,
-          y: 71.0,
-          width: 40.0,
-          height: 27.0
+          x: 67.0,
+          y: 73.0,
+          width: 30.0,
+          height: 20.0
         }
       ]
     },
@@ -213,19 +213,19 @@ window.GUI_GUIDE_DATA = {
           id: "qwerty-capture",
           title: "Cattura combinazione QWERTY",
           text: "Questa area registra i tasti della tastiera QWERTY da inviare quando premi la combinazione fisica ODLA.",
-          x: 4.2,
-          y: 49.0,
-          width: 92.6,
-          height: 18.5
+          x: 3.6,
+          y: 48.0,
+          width: 93.2,
+          height: 19.8
         },
         {
           id: "binding-notes",
           title: "Note",
           text: "Campo facoltativo per annotazioni tecniche, promemoria o descrizioni d'uso del binding.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 74.0,
+          width: 97.2,
+          height: 18.5
         }
       ]
     },
@@ -257,28 +257,28 @@ window.GUI_GUIDE_DATA = {
           id: "midi-row",
           title: "Riga nota MIDI",
           text: "Ogni riga definisce canale, velocity, modalità Staff e nota/pitch da inviare. Puoi costruire sequenze con più righe.",
-          x: 3.2,
-          y: 40.0,
-          width: 93.0,
-          height: 20.0
+          x: 2.2,
+          y: 40.3,
+          width: 95.0,
+          height: 17.2
         },
         {
           id: "midi-add-note",
           title: "Aggiungi nota",
           text: "Questo pulsante aggiunge una nuova riga MIDI, utile per accordi o sequenze articolate.",
-          x: 84.0,
-          y: 52.0,
-          width: 12.5,
+          x: 84.6,
+          y: 45.0,
+          width: 12.6,
           height: 7.0
         },
         {
           id: "midi-note-box",
           title: "Note descrittive",
           text: "Qui puoi inserire note di supporto per spiegare il senso musicale o tecnico dell'associazione.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 63.0,
+          width: 97.2,
+          height: 29.8
         }
       ]
     },
@@ -310,28 +310,28 @@ window.GUI_GUIDE_DATA = {
           id: "menu-selector",
           title: "Selettore menu",
           text: "Qui scegli quale menu GUI deve essere aperto quando si attiva la combinazione fisica.",
-          x: 6.0,
-          y: 46.0,
-          width: 39.0,
-          height: 10.0
+          x: 2.4,
+          y: 45.6,
+          width: 95.2,
+          height: 10.2
         },
         {
           id: "menu-hint",
           title: "Indicazione comportamento",
           text: "Questa nota ricorda che il menu si apre sull'evento di pressione del tasto fisico.",
-          x: 6.0,
-          y: 57.0,
-          width: 58.0,
-          height: 9.0
+          x: 7.2,
+          y: 57.2,
+          width: 55.5,
+          height: 6.2
         },
         {
           id: "menu-binding-notes",
           title: "Note",
           text: "Area facoltativa per annotare perché il menu viene aperto o come si integra nel flusso dell'app.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 62.8,
+          width: 97.2,
+          height: 30.0
         }
       ]
     },
@@ -364,18 +364,18 @@ window.GUI_GUIDE_DATA = {
           title: "Configurazione MIDI",
           text: "La sezione centrale contiene i parametri della nota o sequenza MIDI già collegata al tasto.",
           x: 2.0,
-          y: 38.0,
-          width: 95.0,
-          height: 32.0
+          y: 38.6,
+          width: 95.2,
+          height: 22.5
         },
         {
           id: "edit-binding-notes",
           title: "Note del binding",
           text: "Consente di aggiornare le note senza toccare il comando associato.",
-          x: 1.4,
-          y: 74.0,
-          width: 97.0,
-          height: 17.0
+          x: 1.3,
+          y: 63.0,
+          width: 97.2,
+          height: 29.6
         }
       ]
     },
@@ -433,19 +433,19 @@ window.GUI_GUIDE_DATA = {
           id: "button-qwerty-capture",
           title: "Cattura combinazione",
           text: "Area usata per registrare i tasti QWERTY da inviare quando l'utente attiva il bottone GUI.",
-          x: 4.0,
-          y: 43.0,
-          width: 92.0,
-          height: 23.0
+          x: 3.6,
+          y: 41.5,
+          width: 93.4,
+          height: 20.8
         },
         {
           id: "button-notes",
           title: "Note del bottone",
           text: "Campo utile per documentare il significato del bottone o il contesto in cui va usato.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 57.2,
+          width: 97.2,
+          height: 35.8
         }
       ]
     },
@@ -478,27 +478,27 @@ window.GUI_GUIDE_DATA = {
           title: "Righe note MIDI",
           text: "Ogni riga rappresenta un evento MIDI con canale, velocity e pitch. Qui si costruiscono i contenuti musicali del bottone.",
           x: 2.0,
-          y: 38.0,
-          width: 95.0,
-          height: 28.0
+          y: 37.5,
+          width: 95.2,
+          height: 20.2
         },
         {
           id: "button-midi-add",
           title: "Aggiungi nota",
           text: "Aggiunge una nuova nota alla sequenza MIDI del bottone.",
-          x: 85.0,
-          y: 58.0,
-          width: 12.0,
+          x: 85.6,
+          y: 43.4,
+          width: 11.6,
           height: 7.0
         },
         {
           id: "button-midi-notes",
           title: "Note del bottone",
           text: "Spazio per annotazioni di supporto, ad esempio il contesto musicale o l'effetto desiderato.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 57.2,
+          width: 97.2,
+          height: 35.8
         }
       ]
     },
@@ -530,19 +530,19 @@ window.GUI_GUIDE_DATA = {
           id: "button-menu-selector",
           title: "Menu da aprire",
           text: "Il menu selezionato qui è quello che verrà aperto quando il bottone GUI viene premuto.",
-          x: 7.0,
-          y: 48.0,
-          width: 33.0,
-          height: 10.0
+          x: 2.6,
+          y: 44.0,
+          width: 95.0,
+          height: 11.0
         },
         {
           id: "button-menu-notes",
           title: "Note del bottone",
           text: "Puoi usare questa sezione per spiegare il ruolo del bottone all'interno del flusso dell'interfaccia.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 57.2,
+          width: 97.2,
+          height: 35.8
         }
       ]
     },
@@ -566,18 +566,18 @@ window.GUI_GUIDE_DATA = {
           title: "Contenuto MIDI",
           text: "Qui vedi e modifichi tutte le note MIDI attualmente associate al bottone selezionato.",
           x: 2.0,
-          y: 38.0,
-          width: 95.0,
-          height: 32.0
+          y: 37.5,
+          width: 95.2,
+          height: 25.0
         },
         {
           id: "edit-button-notes",
           title: "Note del bottone",
           text: "Area per aggiornare promemoria o commenti sul bottone.",
-          x: 1.4,
-          y: 73.0,
-          width: 97.0,
-          height: 18.0
+          x: 1.3,
+          y: 57.0,
+          width: 97.2,
+          height: 35.8
         }
       ]
     },
@@ -600,10 +600,10 @@ window.GUI_GUIDE_DATA = {
           id: "export-actions",
           title: "Conferma esportazione",
           text: "OK prosegue verso il salvataggio del file esportato. Cancel chiude il dialog.",
-          x: 56.0,
-          y: 82.0,
-          width: 38.0,
-          height: 15.0
+          x: 59.0,
+          y: 83.0,
+          width: 34.0,
+          height: 14.0
         }
       ]
     },
@@ -626,10 +626,10 @@ window.GUI_GUIDE_DATA = {
           id: "import-actions",
           title: "Conferma importazione",
           text: "OK applica l'importazione delle app selezionate. Cancel interrompe l'operazione.",
-          x: 56.0,
-          y: 82.0,
-          width: 38.0,
-          height: 15.0
+          x: 59.0,
+          y: 83.0,
+          width: 34.0,
+          height: 14.0
         }
       ]
     }
