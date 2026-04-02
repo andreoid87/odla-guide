@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ODLA GUI Guide</title>
-  <link rel="stylesheet" href="./style.css?v=20260402c">
+  <link rel="stylesheet" href="./style.css?v=20260402d">
 </head>
 <body>
   <div class="layout">
@@ -21,12 +21,19 @@
           <h2 id="screen-title">Caricamento</h2>
           <p id="screen-description" class="screen-description"></p>
         </div>
+        <div class="header-tools">
+          <button id="editor-toggle" class="editor-toggle" type="button">Modalità editor: OFF</button>
+        </div>
       </header>
 
       <section class="viewer">
         <div id="canvas-wrap" class="canvas-wrap">
           <img id="screen-image" class="screen-image" alt="">
           <div id="hotspot-layer" class="hotspot-layer"></div>
+          <div id="editor-overlay" class="editor-overlay" hidden>
+            <div id="editor-box" class="editor-box"></div>
+            <div id="editor-crosshair" class="editor-crosshair"></div>
+          </div>
         </div>
 
         <aside id="detail-panel" class="detail-panel">
@@ -38,12 +45,25 @@
             <span class="meta-label">Aree interattive</span>
             <div id="hotspot-list" class="hotspot-list"></div>
           </div>
+          <div id="editor-panel" class="editor-panel" hidden>
+            <span class="meta-label">Editor hotspot</span>
+            <p id="editor-help" class="editor-help">Attiva l'editor, scegli un hotspot e clicca il punto in alto a sinistra e poi quello in basso a destra.</p>
+            <div class="editor-controls">
+              <label class="editor-label" for="editor-hotspot-select">Hotspot</label>
+              <select id="editor-hotspot-select" class="editor-select"></select>
+            </div>
+            <div class="editor-actions">
+              <button id="editor-reset" class="editor-button" type="button">Reset punti</button>
+              <button id="editor-copy" class="editor-button" type="button">Copia coordinate</button>
+            </div>
+            <pre id="editor-output" class="editor-output">Seleziona un hotspot per iniziare.</pre>
+          </div>
         </aside>
       </section>
     </main>
   </div>
 
-  <script src="./guide-data.js?v=20260402c"></script>
-  <script src="./guide.js?v=20260402c"></script>
+  <script src="./guide-data.js?v=20260402d"></script>
+  <script src="./guide.js?v=20260402d"></script>
 </body>
 </html>
