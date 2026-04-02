@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ODLA GUI Guide</title>
-  <link rel="stylesheet" href="./style.css?v=20260402c">
+  <link rel="stylesheet" href="./style.css?v=20260402i">
 </head>
 <body>
   <div class="layout">
@@ -21,12 +21,32 @@
           <h2 id="screen-title">Caricamento</h2>
           <p id="screen-description" class="screen-description"></p>
         </div>
+        <div class="header-tools">
+          <button id="editor-toggle" class="editor-toggle" type="button">Modalità editor: OFF</button>
+        </div>
       </header>
 
       <section class="viewer">
         <div id="canvas-wrap" class="canvas-wrap">
-          <img id="screen-image" class="screen-image" alt="">
-          <div id="hotspot-layer" class="hotspot-layer"></div>
+          <div class="canvas-tools">
+            <div class="zoom-controls">
+              <button id="zoom-out" class="editor-button" type="button" aria-label="Riduci zoom">-</button>
+              <input id="zoom-range" class="zoom-range" type="range" min="50" max="300" step="10" value="100">
+              <button id="zoom-in" class="editor-button" type="button" aria-label="Aumenta zoom">+</button>
+              <button id="zoom-fit" class="editor-button" type="button">Adatta</button>
+            </div>
+            <span id="zoom-level" class="zoom-level">100%</span>
+          </div>
+          <div id="canvas-scroll" class="canvas-scroll">
+            <div id="canvas-stage" class="canvas-stage">
+              <img id="screen-image" class="screen-image" alt="">
+              <div id="hotspot-layer" class="hotspot-layer"></div>
+              <div id="editor-overlay" class="editor-overlay" hidden>
+                <div id="editor-box" class="editor-box"></div>
+                <div id="editor-crosshair" class="editor-crosshair"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <aside id="detail-panel" class="detail-panel">
@@ -38,12 +58,28 @@
             <span class="meta-label">Aree interattive</span>
             <div id="hotspot-list" class="hotspot-list"></div>
           </div>
+          <div id="editor-panel" class="editor-panel" hidden>
+            <span class="meta-label">Editor hotspot</span>
+            <p id="editor-help" class="editor-help">Attiva l'editor, scegli un hotspot e clicca il punto in alto a sinistra e poi quello in basso a destra.</p>
+            <div class="editor-controls">
+              <label class="editor-label" for="editor-hotspot-select">Hotspot</label>
+              <select id="editor-hotspot-select" class="editor-select"></select>
+            </div>
+            <div class="editor-actions">
+              <button id="editor-reset" class="editor-button" type="button">Reset punti</button>
+              <button id="editor-confirm" class="editor-button" type="button">Conferma hotspot</button>
+              <button id="editor-download" class="editor-button" type="button">Scarica modifiche</button>
+              <button id="editor-reset-hotspot" class="editor-button" type="button">Reset hotspot</button>
+              <button id="editor-reset-all" class="editor-button" type="button">Reset tutto</button>
+            </div>
+            <pre id="editor-output" class="editor-output">Seleziona un hotspot per iniziare.</pre>
+          </div>
         </aside>
       </section>
     </main>
   </div>
 
-  <script src="./guide-data.js?v=20260402c"></script>
-  <script src="./guide.js?v=20260402c"></script>
+  <script src="./guide-data.js?v=20260402i"></script>
+  <script src="./guide.js?v=20260402i"></script>
 </body>
 </html>
