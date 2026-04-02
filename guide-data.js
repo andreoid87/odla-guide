@@ -2,27 +2,27 @@ window.GUI_GUIDE_DATA = {
   screens: [
     {
       id: "main-keys",
-      title: "AppConfigurator: Vista Principale",
-      description: "Panoramica completa del configuratore in modalità Tasti fisici, con tab app, comandi rapidi e anteprima della tastiera ODLA.",
+      title: "AppConfigurator: Vista Principale - Tasti fisici",
+      description: "Panoramica del configuratore in modalita Tasti fisici, con barra app, tabella associazioni, tastiera ODLA e area informativa dell'ultima combinazione.",
       image: "./assets/appconfigurator-main-keys.png",
       hotspots: [
         {
           id: "apps-tabs",
           title: "Barra App",
           text: "Qui selezioni l'app che stai configurando. Il pulsante + crea una nuova app, mentre le icone a destra servono per esportare o importare configurazioni.",
-          x: 1.0,
-          y: 3.0,
-          width: 98.0,
-          height: 5.0
+          x: 1.1,
+          y: 4.1,
+          width: 98.3,
+          height: 3.0
         },
         {
           id: "keys-mode",
           title: "Area Tasti fisici",
-          text: "Questa è la modalità dedicata alle associazioni del dispositivo ODLA. Le combinazioni fisiche vengono collegate a comandi QWERTY, MIDI o Menu GUI.",
+          text: "Questa e la modalita dedicata alle associazioni del dispositivo ODLA. Le combinazioni fisiche vengono collegate a comandi QWERTY, MIDI o Menu GUI.",
           x: 1.3,
-          y: 7.8,
-          width: 48.7,
-          height: 5.2
+          y: 7.9,
+          width: 48.4,
+          height: 4.3
         },
         {
           id: "gui-mode",
@@ -36,7 +36,7 @@ window.GUI_GUIDE_DATA = {
         {
           id: "bindings-table",
           title: "Tabella associazioni",
-          text: "Mostra tutte le combinazioni di tasti fisici già configurate, il comando collegato e le note. Da qui selezioni una riga da modificare, scambiare o eliminare.",
+          text: "Mostra tutte le combinazioni di tasti fisici gia configurate, il comando collegato e le note. Da qui selezioni una riga da modificare, scambiare o eliminare.",
           x: 1.5,
           y: 14.1,
           width: 49.6,
@@ -45,11 +45,91 @@ window.GUI_GUIDE_DATA = {
         {
           id: "keyboard-preview",
           title: "Anteprima tastiera ODLA",
-          text: "La tastiera a destra aiuta a capire visivamente i tasti coinvolti. È utile durante la cattura delle combinazioni o per orientarsi nella disposizione dei controlli.",
+          text: "La tastiera a destra aiuta a capire visivamente i tasti coinvolti. E utile durante la cattura delle combinazioni o per orientarsi nella disposizione dei controlli.",
           x: 52.0,
           y: 14.1,
           width: 46.0,
           height: 79.0
+        },
+        {
+          id: "last-combination-info",
+          title: "Ultima combinazione rilevata",
+          text: "Questa fascia sotto al widget mostra l'ultima combinazione di tasti fisici rilevata da ODLA. E utile per verificare rapidamente che il gesto premuto sia stato interpretato correttamente.",
+          x: 71.0,
+          y: 93.2,
+          width: 8.2,
+          height: 4.4
+        }
+      ]
+    },
+    {
+      id: "main-menu",
+      title: "AppConfigurator: Vista Principale - Menu GUI",
+      description: "Vista principale del configuratore in modalita Menu GUI, con elenco menu a sinistra e bottoni del menu selezionato a destra.",
+      image: "./assets/appconfigurator-main-menu.png",
+      hotspots: [
+        {
+          id: "apps-tabs",
+          title: "Barra App",
+          text: "Qui selezioni l'app che stai configurando. Il pulsante + crea una nuova app, mentre le icone a destra servono per esportare o importare configurazioni.",
+          x: 1.1,
+          y: 4.1,
+          width: 98.3,
+          height: 3.0
+        },
+        {
+          id: "keys-mode",
+          title: "Area Tasti fisici",
+          text: "Questa linguetta riporta alla configurazione dei binding fisici del dispositivo ODLA.",
+          x: 1.3,
+          y: 7.9,
+          width: 48.4,
+          height: 4.3
+        },
+        {
+          id: "gui-mode",
+          title: "Area Menu GUI",
+          text: "Questa e la modalita dedicata alla struttura dei menu e dei bottoni visualizzati nella GUI ODLA.",
+          x: 50.4,
+          y: 7.9,
+          width: 48.4,
+          height: 4.3
+        },
+        {
+          id: "menu-actions",
+          title: "Azioni Menu",
+          text: "Da qui puoi creare o rimuovere i menu disponibili per l'app corrente. L'elenco sottostante mostra tutti i menu gia definiti.",
+          x: 2.3,
+          y: 14.2,
+          width: 46.9,
+          height: 6.0
+        },
+        {
+          id: "menu-list",
+          title: "Elenco Menu",
+          text: "La tabella di sinistra contiene tutti i menu configurati. Selezionando una riga aggiorni il pannello dei bottoni relativo a quel menu.",
+          x: 2.3,
+          y: 20.2,
+          width: 46.9,
+          height: 76.2
+        },
+        {
+          id: "button-actions",
+          title: "Azioni Bottoni",
+          text: "I pulsanti Nuovo bottone, Comando bottone ed Elimina servono a creare, modificare o rimuovere i bottoni del menu selezionato.",
+          x: 50.7,
+          y: 14.2,
+          width: 46.9,
+          height: 6.0
+        },
+        {
+          id: "button-list",
+          title: "Tabella Bottoni",
+          text: "Questa tabella mostra nome del bottone, comando associato e note. E il punto centrale per costruire il contenuto del menu GUI.",
+          x: 50.7,
+          y: 20.2,
+          width: 46.9,
+          height: 76.2
         }
       ]
     },
@@ -106,7 +186,7 @@ window.GUI_GUIDE_DATA = {
         {
           id: "duplicate-source",
           title: "Duplica da",
-          text: "Permette di partire da una configurazione esistente. È il modo più rapido per creare una nuova app mantenendo menu, bottoni o binding come base.",
+          text: "Permette di partire da una configurazione esistente. E il modo piu rapido per creare una nuova app mantenendo menu, bottoni o binding come base.",
           x: 1.0,
           y: 14.5,
           width: 98.0,
@@ -194,7 +274,7 @@ window.GUI_GUIDE_DATA = {
         {
           id: "command-type",
           title: "Tipo comando",
-          text: "Questa riga sceglie il tipo di azione associata al tasto fisico. In questa schermata è selezionato QWERTY.",
+          text: "Questa riga sceglie il tipo di azione associata al tasto fisico. In questa schermata e selezionato QWERTY.",
           x: 1.4,
           y: 28.0,
           width: 40.0,
@@ -203,20 +283,20 @@ window.GUI_GUIDE_DATA = {
         {
           id: "existing-command",
           title: "Usa comando esistente",
-          text: "Se attivi questa opzione, puoi riusare un comando già definito invece di crearne uno nuovo da zero.",
+          text: "Se attivi questa opzione, puoi riusare un comando gia definito invece di crearne uno nuovo da zero. Il menu subito sotto serve a scegliere quale comando esistente collegare.",
           x: 1.4,
-          y: 36.0,
+          y: 35.5,
           width: 97.0,
-          height: 11.0
+          height: 13.5
         },
         {
           id: "qwerty-capture",
           title: "Cattura combinazione QWERTY",
           text: "Questa area registra i tasti della tastiera QWERTY da inviare quando premi la combinazione fisica ODLA.",
           x: 3.6,
-          y: 48.0,
+          y: 49.0,
           width: 93.2,
-          height: 19.8
+          height: 18.8
         },
         {
           id: "binding-notes",
@@ -238,7 +318,7 @@ window.GUI_GUIDE_DATA = {
         {
           id: "physical-key-midi",
           title: "Tasto ODLA",
-          text: "Come per il binding QWERTY, qui scegli il gesto fisico ODLA che attiverà l'evento MIDI.",
+          text: "Come per il binding QWERTY, qui scegli il gesto fisico ODLA che attivera l'evento MIDI.",
           x: 1.3,
           y: 5.0,
           width: 97.3,
@@ -247,29 +327,47 @@ window.GUI_GUIDE_DATA = {
         {
           id: "midi-type",
           title: "Tipo MIDI",
-          text: "La modalità MIDI è selezionata. Serve quando il tasto fisico deve inviare note o sequenze MIDI a un software esterno.",
+          text: "La modalita MIDI e selezionata. Serve quando il tasto fisico deve inviare note o sequenze MIDI a un software esterno.",
           x: 1.4,
           y: 28.0,
           width: 40.0,
           height: 9.0
         },
         {
+          id: "existing-midi-command",
+          title: "Usa comando esistente",
+          text: "Questa opzione permette di riutilizzare un comando MIDI gia definito. Il menu a discesa sottostante ti fa scegliere il comando gia presente da collegare al binding.",
+          x: 1.4,
+          y: 35.0,
+          width: 97.0,
+          height: 13.0
+        },
+        {
           id: "midi-row",
           title: "Riga nota MIDI",
-          text: "Ogni riga definisce canale, velocity, modalità Staff e nota/pitch da inviare. Puoi costruire sequenze con più righe.",
+          text: "Ogni riga definisce canale, velocity, modalita Staff e nota o pitch da inviare. Puoi costruire sequenze con piu righe.",
           x: 2.2,
-          y: 40.3,
+          y: 48.2,
           width: 95.0,
-          height: 17.2
+          height: 16.2
+        },
+        {
+          id: "midi-staff-toggle",
+          title: "Flag Staff",
+          text: "Quando attivi Staff, il valore finale non viene interpretato come nota MIDI assoluta ma come posizione sul pentagramma. Questo e utile nei flussi che lavorano per gradi o posizioni musicali invece che per pitch numerico.",
+          x: 62.2,
+          y: 48.8,
+          width: 10.0,
+          height: 8.0
         },
         {
           id: "midi-add-note",
           title: "Aggiungi nota",
           text: "Questo pulsante aggiunge una nuova riga MIDI, utile per accordi o sequenze articolate.",
           x: 84.6,
-          y: 45.0,
+          y: 51.2,
           width: 12.6,
-          height: 7.0
+          height: 7.2
         },
         {
           id: "midi-note-box",
@@ -291,7 +389,7 @@ window.GUI_GUIDE_DATA = {
         {
           id: "physical-key-menu",
           title: "Tasto ODLA",
-          text: "Definisce quale combinazione fisica aprirà il menu selezionato.",
+          text: "Definisce quale combinazione fisica aprira il menu selezionato.",
           x: 1.3,
           y: 5.0,
           width: 97.3,
@@ -307,44 +405,53 @@ window.GUI_GUIDE_DATA = {
           height: 9.0
         },
         {
+          id: "existing-menu-command",
+          title: "Usa comando esistente",
+          text: "Anche per i menu puoi riutilizzare un comando gia definito. Il campo sotto il checkbox mostra l'elenco dei comandi compatibili gia presenti nell'app.",
+          x: 1.4,
+          y: 35.0,
+          width: 97.0,
+          height: 13.0
+        },
+        {
           id: "menu-selector",
           title: "Selettore menu",
           text: "Qui scegli quale menu GUI deve essere aperto quando si attiva la combinazione fisica.",
           x: 2.4,
-          y: 45.6,
+          y: 49.8,
           width: 95.2,
-          height: 10.2
+          height: 8.6
         },
         {
           id: "menu-hint",
           title: "Indicazione comportamento",
           text: "Questa nota ricorda che il menu si apre sull'evento di pressione del tasto fisico.",
           x: 7.2,
-          y: 57.2,
+          y: 58.8,
           width: 55.5,
-          height: 6.2
+          height: 5.2
         },
         {
           id: "menu-binding-notes",
           title: "Note",
-          text: "Area facoltativa per annotare perché il menu viene aperto o come si integra nel flusso dell'app.",
+          text: "Area facoltativa per annotare perche il menu viene aperto o come si integra nel flusso dell'app.",
           x: 1.3,
-          y: 62.8,
+          y: 63.2,
           width: 97.2,
-          height: 30.0
+          height: 29.6
         }
       ]
     },
     {
       id: "edit-binding",
       title: "Modifica Associazione",
-      description: "Dialog di modifica di un binding già esistente. In questo screenshot la parte comando è in modalità MIDI.",
+      description: "Dialog di modifica di un binding gia esistente. In questo screenshot la parte comando e in modalita MIDI.",
       image: "./assets/appconfigurator-edit-binding.png",
       hotspots: [
         {
           id: "edit-physical-key",
           title: "Combinazione fisica acquisita",
-          text: "Mostra il tasto ODLA già associato. Puoi ascoltare di nuovo o reimpostare la selezione per cambiarla.",
+          text: "Mostra il tasto ODLA gia associato. Puoi ascoltare di nuovo o reimpostare la selezione per cambiarla.",
           x: 1.3,
           y: 5.0,
           width: 97.3,
@@ -353,20 +460,38 @@ window.GUI_GUIDE_DATA = {
         {
           id: "edit-type-midi",
           title: "Tipo comando selezionato",
-          text: "Qui vedi il tipo attualmente associato. In questa schermata è selezionato MIDI, ma puoi cambiare il tipo se necessario.",
+          text: "Qui vedi il tipo attualmente associato. In questa schermata e selezionato MIDI, ma puoi cambiare il tipo se necessario.",
           x: 1.4,
           y: 28.0,
           width: 42.0,
           height: 9.0
         },
         {
+          id: "edit-existing-command",
+          title: "Usa comando esistente",
+          text: "Se lo attivi, il binding viene riallineato a un comando gia presente invece di mantenere o modificare i parametri manualmente. Il menu sotto il checkbox contiene l'elenco dei comandi disponibili.",
+          x: 1.4,
+          y: 35.0,
+          width: 97.0,
+          height: 13.0
+        },
+        {
           id: "edit-midi-config",
           title: "Configurazione MIDI",
-          text: "La sezione centrale contiene i parametri della nota o sequenza MIDI già collegata al tasto.",
+          text: "La sezione centrale contiene i parametri della nota o sequenza MIDI gia collegata al tasto.",
           x: 2.0,
-          y: 38.6,
+          y: 48.0,
           width: 95.2,
-          height: 22.5
+          height: 18.5
+        },
+        {
+          id: "edit-midi-staff",
+          title: "Flag Staff",
+          text: "La flag Staff cambia il significato del valore finale: da nota MIDI numerica a posizione di pentagramma. Serve quando il comando deve seguire una logica musicale a staff anziche un pitch assoluto.",
+          x: 62.0,
+          y: 48.4,
+          width: 10.0,
+          height: 8.0
         },
         {
           id: "edit-binding-notes",
@@ -414,7 +539,7 @@ window.GUI_GUIDE_DATA = {
         {
           id: "button-name",
           title: "Nome bottone",
-          text: "Questo nome viene mostrato nella GUI di ODLA. È il testo con cui l'utente riconosce il bottone nel menu.",
+          text: "Questo nome viene mostrato nella GUI di ODLA. E il testo con cui l'utente riconosce il bottone nel menu.",
           x: 1.4,
           y: 7.0,
           width: 97.0,
@@ -423,20 +548,29 @@ window.GUI_GUIDE_DATA = {
         {
           id: "button-qwerty-type",
           title: "Tipo QWERTY",
-          text: "Il bottone è configurato per inviare una sequenza QWERTY invece di un evento MIDI o l'apertura di un menu.",
+          text: "Il bottone e configurato per inviare una sequenza QWERTY invece di un evento MIDI o l'apertura di un menu.",
           x: 1.4,
           y: 23.0,
           width: 42.0,
           height: 10.0
         },
         {
+          id: "button-existing-command",
+          title: "Usa comando esistente",
+          text: "Questa opzione permette di collegare al bottone un comando gia definito invece di crearne uno nuovo. Il menu sottostante mostra i comandi riutilizzabili.",
+          x: 1.4,
+          y: 31.8,
+          width: 97.0,
+          height: 13.2
+        },
+        {
           id: "button-qwerty-capture",
           title: "Cattura combinazione",
           text: "Area usata per registrare i tasti QWERTY da inviare quando l'utente attiva il bottone GUI.",
           x: 3.6,
-          y: 41.5,
+          y: 45.0,
           width: 93.4,
-          height: 20.8
+          height: 17.0
         },
         {
           id: "button-notes",
@@ -452,7 +586,7 @@ window.GUI_GUIDE_DATA = {
     {
       id: "command-button-midi",
       title: "Comando Bottone: MIDI",
-      description: "Dialog per creare un bottone GUI che invia una o più note MIDI.",
+      description: "Dialog per creare un bottone GUI che invia una o piu note MIDI.",
       image: "./assets/appconfigurator-command-button-midi.png",
       hotspots: [
         {
@@ -467,29 +601,47 @@ window.GUI_GUIDE_DATA = {
         {
           id: "button-midi-type",
           title: "Tipo MIDI",
-          text: "La modalità MIDI è attiva. Il bottone può inviare singole note, accordi o piccole sequenze.",
+          text: "La modalita MIDI e attiva. Il bottone puo inviare singole note, accordi o piccole sequenze.",
           x: 1.4,
           y: 23.0,
           width: 42.0,
           height: 10.0
         },
         {
+          id: "button-midi-existing",
+          title: "Usa comando esistente",
+          text: "Permette di riutilizzare un comando MIDI gia presente nell'app. Il menu sotto il checkbox serve a scegliere il comando da riagganciare al bottone.",
+          x: 1.4,
+          y: 31.8,
+          width: 97.0,
+          height: 13.2
+        },
+        {
           id: "button-midi-rows",
           title: "Righe note MIDI",
           text: "Ogni riga rappresenta un evento MIDI con canale, velocity e pitch. Qui si costruiscono i contenuti musicali del bottone.",
           x: 2.0,
-          y: 37.5,
+          y: 45.0,
           width: 95.2,
-          height: 20.2
+          height: 19.0
+        },
+        {
+          id: "button-midi-staff",
+          title: "Flag Staff",
+          text: "La flag Staff fa leggere il valore finale come posizione sul pentagramma invece che come nota MIDI assoluta. E utile quando il comando deve seguire una mappatura musicale piu astratta.",
+          x: 62.0,
+          y: 44.6,
+          width: 10.0,
+          height: 10.8
         },
         {
           id: "button-midi-add",
           title: "Aggiungi nota",
           text: "Aggiunge una nuova nota alla sequenza MIDI del bottone.",
-          x: 85.6,
-          y: 43.4,
-          width: 11.6,
-          height: 7.0
+          x: 84.6,
+          y: 52.0,
+          width: 12.0,
+          height: 8.2
         },
         {
           id: "button-midi-notes",
@@ -520,20 +672,29 @@ window.GUI_GUIDE_DATA = {
         {
           id: "button-menu-type",
           title: "Tipo Menu GUI",
-          text: "Con questa modalità il bottone non invia tasti o MIDI, ma porta l'utente verso un altro menu configurato.",
+          text: "Con questa modalita il bottone non invia tasti o MIDI, ma porta l'utente verso un altro menu configurato.",
           x: 1.4,
           y: 23.0,
           width: 45.0,
           height: 10.0
         },
         {
+          id: "button-menu-existing",
+          title: "Usa comando esistente",
+          text: "Permette di riutilizzare un comando menu gia configurato. Il menu sotto il checkbox mostra i comandi disponibili che puoi collegare al bottone corrente.",
+          x: 1.4,
+          y: 31.8,
+          width: 97.0,
+          height: 13.2
+        },
+        {
           id: "button-menu-selector",
           title: "Menu da aprire",
-          text: "Il menu selezionato qui è quello che verrà aperto quando il bottone GUI viene premuto.",
+          text: "Il menu selezionato qui e quello che verra aperto quando il bottone GUI viene premuto.",
           x: 2.6,
-          y: 44.0,
+          y: 45.0,
           width: 95.0,
-          height: 11.0
+          height: 9.0
         },
         {
           id: "button-menu-notes",
@@ -549,17 +710,26 @@ window.GUI_GUIDE_DATA = {
     {
       id: "edit-button",
       title: "Modifica Bottone",
-      description: "Dialog di modifica di un bottone esistente. In questo screenshot la parte comando è in modalità MIDI con più note.",
+      description: "Dialog di modifica di un bottone esistente. In questo screenshot la parte comando e in modalita MIDI con piu note.",
       image: "./assets/appconfigurator-edit-button.png",
       hotspots: [
         {
           id: "edit-button-name",
           title: "Nome del bottone",
-          text: "Permette di rinominare il bottone già esistente senza ricrearlo.",
+          text: "Permette di rinominare il bottone gia esistente senza ricrearlo.",
           x: 1.4,
           y: 7.0,
           width: 97.0,
           height: 13.0
+        },
+        {
+          id: "edit-button-existing",
+          title: "Usa comando esistente",
+          text: "Se attivi questa opzione, il bottone viene riallineato a un comando gia presente. Il campo subito sotto ti permette di sceglierlo dall'elenco disponibile.",
+          x: 1.4,
+          y: 24.0,
+          width: 97.0,
+          height: 13.2
         },
         {
           id: "edit-button-midi",
@@ -569,6 +739,15 @@ window.GUI_GUIDE_DATA = {
           y: 37.5,
           width: 95.2,
           height: 25.0
+        },
+        {
+          id: "edit-button-midi-staff",
+          title: "Flag Staff",
+          text: "Ogni riga puo usare la flag Staff per trattare il valore finale come posizione sul pentagramma invece che come nota MIDI assoluta.",
+          x: 62.0,
+          y: 37.2,
+          width: 10.0,
+          height: 17.0
         },
         {
           id: "edit-button-notes",
@@ -584,13 +763,13 @@ window.GUI_GUIDE_DATA = {
     {
       id: "export-config",
       title: "Esporta Configurazione",
-      description: "Dialog per scegliere una o più app da esportare.",
+      description: "Dialog per scegliere una o piu app da esportare.",
       image: "./assets/appconfigurator-export-config.png",
       hotspots: [
         {
           id: "export-selection",
           title: "Selezione app",
-          text: "Ogni checkbox decide quali app includere nel file di esportazione. Puoi esportarne una sola o più di una insieme.",
+          text: "Ogni checkbox decide quali app includere nel file di esportazione. Puoi esportarne una sola o piu di una insieme.",
           x: 6.0,
           y: 20.0,
           width: 88.0,

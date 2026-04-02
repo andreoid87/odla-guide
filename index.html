@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ODLA GUI Guide</title>
-  <link rel="stylesheet" href="./style.css?v=20260402f">
+  <link rel="stylesheet" href="./style.css?v=20260402g">
 </head>
 <body>
   <div class="layout">
@@ -28,11 +28,24 @@
 
       <section class="viewer">
         <div id="canvas-wrap" class="canvas-wrap">
-          <img id="screen-image" class="screen-image" alt="">
-          <div id="hotspot-layer" class="hotspot-layer"></div>
-          <div id="editor-overlay" class="editor-overlay" hidden>
-            <div id="editor-box" class="editor-box"></div>
-            <div id="editor-crosshair" class="editor-crosshair"></div>
+          <div class="canvas-tools">
+            <div class="zoom-controls">
+              <button id="zoom-out" class="editor-button" type="button" aria-label="Riduci zoom">-</button>
+              <input id="zoom-range" class="zoom-range" type="range" min="50" max="300" step="10" value="100">
+              <button id="zoom-in" class="editor-button" type="button" aria-label="Aumenta zoom">+</button>
+              <button id="zoom-fit" class="editor-button" type="button">Adatta</button>
+            </div>
+            <span id="zoom-level" class="zoom-level">100%</span>
+          </div>
+          <div id="canvas-scroll" class="canvas-scroll">
+            <div id="canvas-stage" class="canvas-stage">
+              <img id="screen-image" class="screen-image" alt="">
+              <div id="hotspot-layer" class="hotspot-layer"></div>
+              <div id="editor-overlay" class="editor-overlay" hidden>
+                <div id="editor-box" class="editor-box"></div>
+                <div id="editor-crosshair" class="editor-crosshair"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -66,7 +79,7 @@
     </main>
   </div>
 
-  <script src="./guide-data.js?v=20260402f"></script>
-  <script src="./guide.js?v=20260402f"></script>
+  <script src="./guide-data.js?v=20260402g"></script>
+  <script src="./guide.js?v=20260402g"></script>
 </body>
 </html>

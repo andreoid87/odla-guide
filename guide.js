@@ -5,6 +5,8 @@
   const screenList = document.getElementById("screen-list");
   const screenCounter = document.getElementById("screen-counter");
   const image = document.getElementById("screen-image");
+  const canvasScroll = document.getElementById("canvas-scroll");
+  const canvasStage = document.getElementById("canvas-stage");
   const title = document.getElementById("screen-title");
   const description = document.getElementById("screen-description");
   const hotspotLayer = document.getElementById("hotspot-layer");
@@ -24,12 +26,19 @@
   const editorOverlay = document.getElementById("editor-overlay");
   const editorBox = document.getElementById("editor-box");
   const editorCrosshair = document.getElementById("editor-crosshair");
+  const zoomOut = document.getElementById("zoom-out");
+  const zoomIn = document.getElementById("zoom-in");
+  const zoomFit = document.getElementById("zoom-fit");
+  const zoomRange = document.getElementById("zoom-range");
+  const zoomLevel = document.getElementById("zoom-level");
 
   let currentScreenId = null;
   let currentHotspotId = null;
   let editorEnabled = false;
   let editorPoints = [];
   let overrides = loadOverrides();
+  let zoomFactor = 1;
+  let baseFitScale = 1;
 
   function loadOverrides() {
     try {
@@ -92,6 +101,8 @@
     description.textContent = screen.description;
     image.src = screen.image;
     image.alt = screen.title;
+    canvasScroll.scrollTop = 0;
+    canvasScroll.scrollLeft = 0;
     detailTitle.textContent = "Seleziona un'area";
     detailText.textContent = "Clicca su una zona evidenziata dello screenshot oppure usa l'elenco aree qui sotto.";
     screenCounter.textContent = `${data.screens.length} schermate documentate`;
@@ -146,6 +157,29 @@
       editorHotspotSelect.value = screen.hotspots[0].id;
     }
     updateEditorUI();
+  }
+
+  function updateZoomUI() {
+    zoomRange.value = String(Math.round(zoomFactor * 100));
+    zoomLevel.textContent = `${Math.round(zoomFactor * 100)}%`;
+  }
+
+  function applyZoom() {
+    if (!image.naturalWidth || !image.naturalHeight)
+      return;
+
+    const availableWidth = Math.max(canvasScroll.clientWidth - 28, 200);
+    const availableHeight = Math.max(canvasScroll.clientHeight - 28, 200);
+    baseFitScale = Math.min(availableWidth / image.naturalWidth, availableHeight / image.naturalHeight);
+    const effectiveScale = baseFitScale * zoomFactor;
+    canvasStage.style.width = `${Math.round(image.naturalWidth * effectiveScale)}px`;
+    canvasStage.style.height = `${Math.round(image.naturalHeight * effectiveScale)}px`;
+    updateZoomUI();
+  }
+
+  function setZoomFactor(nextZoom) {
+    zoomFactor = Math.min(3, Math.max(0.5, nextZoom));
+    applyZoom();
   }
 
   function selectHotspot(screen, hotspotId) {
@@ -341,6 +375,10 @@
     updateEditorUI();
   }
 
+  image.addEventListener("load", () => {
+    zoomFactor = 1;
+    applyZoom();
+  });
   editorToggle.addEventListener("click", () => setEditorEnabled(!editorEnabled));
   editorHotspotSelect.addEventListener("change", () => {
     const screen = getCurrentScreen();
@@ -356,6 +394,10 @@
   editorResetHotspot.addEventListener("click", resetCurrentHotspotOverride);
   editorResetAll.addEventListener("click", resetAllOverrides);
   editorOverlay.addEventListener("click", onEditorOverlayClick);
+  zoomOut.addEventListener("click", () => setZoomFactor(zoomFactor - 0.1));
+  zoomIn.addEventListener("click", () => setZoomFactor(zoomFactor + 0.1));
+  zoomFit.addEventListener("click", () => setZoomFactor(1));
+  zoomRange.addEventListener("input", () => setZoomFactor(Number(zoomRange.value) / 100));
 
   document.addEventListener("keydown", (event) => {
     const screens = data.screens;
@@ -370,6 +412,7 @@
     if (event.key === "Escape" && editorEnabled)
       resetEditorPoints();
   });
+  window.addEventListener("resize", applyZoom);
 
   renderList();
   if (data.screens.length > 0)
