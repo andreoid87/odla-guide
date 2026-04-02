@@ -37,8 +37,9 @@
   let editorEnabled = false;
   let editorPoints = [];
   let overrides = loadOverrides();
-  let zoomFactor = 1;
-  let baseFitScale = 1;
+  let manualZoom = 1;
+  let fitScale = 1;
+  let zoomMode = "fit";
 
   function loadOverrides() {
     try {
@@ -101,6 +102,8 @@
     description.textContent = screen.description;
     image.src = screen.image;
     image.alt = screen.title;
+    zoomMode = "fit";
+    manualZoom = 1;
     canvasScroll.scrollTop = 0;
     canvasScroll.scrollLeft = 0;
     detailTitle.textContent = "Seleziona un'area";
@@ -159,9 +162,14 @@
     updateEditorUI();
   }
 
+  function getEffectiveScale() {
+    return zoomMode === "fit" ? fitScale : manualZoom;
+  }
+
   function updateZoomUI() {
-    zoomRange.value = String(Math.round(zoomFactor * 100));
-    zoomLevel.textContent = `${Math.round(zoomFactor * 100)}%`;
+    const effectiveScale = getEffectiveScale();
+    zoomRange.value = String(Math.round(effectiveScale * 100));
+    zoomLevel.textContent = `${Math.round(effectiveScale * 100)}%`;
   }
 
   function applyZoom() {
@@ -170,15 +178,16 @@
 
     const availableWidth = Math.max(canvasScroll.clientWidth - 28, 200);
     const availableHeight = Math.max(canvasScroll.clientHeight - 28, 200);
-    baseFitScale = Math.min(availableWidth / image.naturalWidth, availableHeight / image.naturalHeight);
-    const effectiveScale = baseFitScale * zoomFactor;
+    fitScale = Math.min(availableWidth / image.naturalWidth, availableHeight / image.naturalHeight);
+    const effectiveScale = getEffectiveScale();
     canvasStage.style.width = `${Math.round(image.naturalWidth * effectiveScale)}px`;
     canvasStage.style.height = `${Math.round(image.naturalHeight * effectiveScale)}px`;
     updateZoomUI();
   }
 
-  function setZoomFactor(nextZoom) {
-    zoomFactor = Math.min(3, Math.max(0.5, nextZoom));
+  function setManualZoom(nextZoom) {
+    zoomMode = "manual";
+    manualZoom = Math.min(3, Math.max(0.25, nextZoom));
     applyZoom();
   }
 
@@ -376,7 +385,8 @@
   }
 
   image.addEventListener("load", () => {
-    zoomFactor = 1;
+    zoomMode = "fit";
+    manualZoom = 1;
     applyZoom();
   });
   editorToggle.addEventListener("click", () => setEditorEnabled(!editorEnabled));
@@ -394,10 +404,13 @@
   editorResetHotspot.addEventListener("click", resetCurrentHotspotOverride);
   editorResetAll.addEventListener("click", resetAllOverrides);
   editorOverlay.addEventListener("click", onEditorOverlayClick);
-  zoomOut.addEventListener("click", () => setZoomFactor(zoomFactor - 0.1));
-  zoomIn.addEventListener("click", () => setZoomFactor(zoomFactor + 0.1));
-  zoomFit.addEventListener("click", () => setZoomFactor(1));
-  zoomRange.addEventListener("input", () => setZoomFactor(Number(zoomRange.value) / 100));
+  zoomOut.addEventListener("click", () => setManualZoom(getEffectiveScale() - 0.1));
+  zoomIn.addEventListener("click", () => setManualZoom(getEffectiveScale() + 0.1));
+  zoomFit.addEventListener("click", () => {
+    zoomMode = "fit";
+    applyZoom();
+  });
+  zoomRange.addEventListener("input", () => setManualZoom(Number(zoomRange.value) / 100));
 
   document.addEventListener("keydown", (event) => {
     const screens = data.screens;
