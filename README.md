@@ -15,6 +15,15 @@ Open `index.html` directly in a browser or serve the repository root with any st
 
 GitHub Pages can publish this repository directly from the `main` branch root.
 
+## Maintenance Workflow
+
+For future updates and session continuity, read [MAINTENANCE_CONTEXT.md](/D:/KemoniaRiver/odla-guide/MAINTENANCE_CONTEXT.md).
+That file contains:
+- current guide scope and structure
+- branch workflow (`hotspot-editor` -> `main`)
+- hotspot update procedure
+- a ready-to-paste template for future change requests
+
 ## Scope
 
 Current guide includes:
