@@ -16,12 +16,10 @@
   const editorHelp = document.getElementById("editor-help");
   const editorHotspotSelect = document.getElementById("editor-hotspot-select");
   const editorReset = document.getElementById("editor-reset");
+  const editorConfirm = document.getElementById("editor-confirm");
+  const editorDownload = document.getElementById("editor-download");
   const editorResetHotspot = document.getElementById("editor-reset-hotspot");
   const editorResetAll = document.getElementById("editor-reset-all");
-  const editorCopy = document.getElementById("editor-copy");
-  const editorExport = document.getElementById("editor-export");
-  const editorImport = document.getElementById("editor-import");
-  const editorJson = document.getElementById("editor-json");
   const editorOutput = document.getElementById("editor-output");
   const editorOverlay = document.getElementById("editor-overlay");
   const editorBox = document.getElementById("editor-box");
@@ -222,24 +220,6 @@
     return overrides[currentScreenId][hotspot.id];
   }
 
-  function exportOverrides() {
-    editorJson.value = JSON.stringify(overrides, null, 2);
-    editorHelp.textContent = "Modifiche locali esportate nel riquadro JSON.";
-  }
-
-  function importOverrides() {
-    try {
-      const parsed = JSON.parse(editorJson.value || "{}");
-      overrides = parsed && typeof parsed === "object" ? parsed : {};
-      persistOverrides();
-      resetEditorPoints();
-      renderScreen(currentScreenId);
-      editorHelp.textContent = "Modifiche importate correttamente.";
-    } catch {
-      editorHelp.textContent = "JSON non valido. Correggilo e riprova.";
-    }
-  }
-
   function resetCurrentHotspotOverride() {
     const hotspot = getCurrentHotspot();
     if (!hotspot || !overrides[currentScreenId])
@@ -258,8 +238,36 @@
     persistOverrides();
     resetEditorPoints();
     renderScreen(currentScreenId);
-    editorJson.value = "";
     editorHelp.textContent = "Tutte le modifiche locali sono state rimosse.";
+  }
+
+  function confirmCurrentMeasurement() {
+    const hotspot = getCurrentHotspot();
+    if (!hotspot || editorPoints.length !== 2)
+      return;
+
+    const saved = applyCurrentMeasurement();
+    const screen = getCurrentScreen();
+    resetEditorPoints();
+    renderScreen(currentScreenId);
+    if (screen)
+      selectHotspot(screen, hotspot.id);
+    if (saved)
+      editorHelp.textContent = `Misura confermata per "${hotspot.title}" e salvata in locale.`;
+  }
+
+  function downloadOverrides() {
+    const payload = JSON.stringify(overrides, null, 2);
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "odla-hotspot-overrides.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    editorHelp.textContent = "File locale delle modifiche scaricato.";
   }
 
   function updateEditorUI() {
@@ -269,11 +277,10 @@
 
     editorToggle.disabled = !hasScreen;
     editorReset.disabled = !editorEnabled;
+    editorConfirm.disabled = !(editorEnabled && hotspot && editorPoints.length === 2);
+    editorDownload.disabled = !(editorEnabled && Object.keys(overrides).length > 0);
     editorResetHotspot.disabled = !(editorEnabled && hotspot && overridden);
     editorResetAll.disabled = !(editorEnabled && Object.keys(overrides).length > 0);
-    editorCopy.disabled = !(editorEnabled && hotspot);
-    editorExport.disabled = !editorEnabled;
-    editorImport.disabled = !editorEnabled;
 
     if (!editorEnabled) {
       editorOutput.textContent = "Attiva la modalità editor per misurare un hotspot.";
@@ -308,7 +315,7 @@
     }
 
     const rect = normalizePoints(editorPoints[0], editorPoints[1]);
-    editorHelp.textContent = `Hotspot: ${hotspot.title}. Coordinate pronte. Usa "Copia coordinate" o passa a un altro hotspot per salvarle.`;
+    editorHelp.textContent = `Hotspot: ${hotspot.title}. Coordinate pronte. Premi "Conferma hotspot" per salvare questa misura.`;
     editorOutput.textContent =
 `{
   "screenId": "${currentScreenId}",
@@ -334,52 +341,20 @@
     updateEditorUI();
   }
 
-  async function copyEditorOutput() {
-    const hotspot = getCurrentHotspot();
-    if (!hotspot)
-      return;
-
-    let payload = editorOutput.textContent.trim();
-    if (editorPoints.length === 2) {
-      const saved = applyCurrentMeasurement();
-      renderScreen(currentScreenId);
-      selectHotspot(getCurrentScreen(), hotspot.id);
-      payload = JSON.stringify({
-        screenId: currentScreenId,
-        hotspotId: hotspot.id,
-        ...saved
-      }, null, 2);
-      editorOutput.textContent = payload;
-    }
-
-    if (!payload)
-      return;
-
-    try {
-      await navigator.clipboard.writeText(payload);
-      editorHelp.textContent = "Coordinate copiate negli appunti e salvate in locale.";
-    } catch {
-      editorHelp.textContent = "Copia non riuscita. Copia il blocco manualmente.";
-    }
-  }
-
   editorToggle.addEventListener("click", () => setEditorEnabled(!editorEnabled));
   editorHotspotSelect.addEventListener("change", () => {
     const screen = getCurrentScreen();
     if (!screen)
       return;
-    if (editorPoints.length === 2)
-      applyCurrentMeasurement();
     resetEditorPoints();
     renderScreen(currentScreenId);
     selectHotspot(screen, editorHotspotSelect.value);
   });
   editorReset.addEventListener("click", resetEditorPoints);
+  editorConfirm.addEventListener("click", confirmCurrentMeasurement);
+  editorDownload.addEventListener("click", downloadOverrides);
   editorResetHotspot.addEventListener("click", resetCurrentHotspotOverride);
   editorResetAll.addEventListener("click", resetAllOverrides);
-  editorCopy.addEventListener("click", copyEditorOutput);
-  editorExport.addEventListener("click", exportOverrides);
-  editorImport.addEventListener("click", importOverrides);
   editorOverlay.addEventListener("click", onEditorOverlayClick);
 
   document.addEventListener("keydown", (event) => {
