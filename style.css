@@ -317,6 +317,7 @@ body {
 .editor-actions {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .editor-output {
@@ -330,6 +331,28 @@ body {
   line-height: 1.45;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.editor-json {
+  width: 100%;
+  min-height: 160px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.hotspot.is-overridden {
+  border-color: rgba(255, 143, 107, 0.55);
+}
+
+.hotspot-chip.is-overridden {
+  border-color: rgba(255, 143, 107, 0.4);
+  background: rgba(255, 143, 107, 0.12);
 }
 
 .meta-label {

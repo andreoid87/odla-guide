@@ -1,4 +1,6 @@
 (function () {
+  const STORAGE_KEY = "odla-guide-hotspot-overrides-v1";
+
   const data = window.GUI_GUIDE_DATA;
   const screenList = document.getElementById("screen-list");
   const screenCounter = document.getElementById("screen-counter");
@@ -14,7 +16,12 @@
   const editorHelp = document.getElementById("editor-help");
   const editorHotspotSelect = document.getElementById("editor-hotspot-select");
   const editorReset = document.getElementById("editor-reset");
+  const editorResetHotspot = document.getElementById("editor-reset-hotspot");
+  const editorResetAll = document.getElementById("editor-reset-all");
   const editorCopy = document.getElementById("editor-copy");
+  const editorExport = document.getElementById("editor-export");
+  const editorImport = document.getElementById("editor-import");
+  const editorJson = document.getElementById("editor-json");
   const editorOutput = document.getElementById("editor-output");
   const editorOverlay = document.getElementById("editor-overlay");
   const editorBox = document.getElementById("editor-box");
@@ -24,6 +31,20 @@
   let currentHotspotId = null;
   let editorEnabled = false;
   let editorPoints = [];
+  let overrides = loadOverrides();
+
+  function loadOverrides() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function persistOverrides() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides, null, 2));
+  }
 
   function getCurrentScreen() {
     return data.screens.find((item) => item.id === currentScreenId) || null;
@@ -32,6 +53,16 @@
   function getCurrentHotspot() {
     const screen = getCurrentScreen();
     return screen ? screen.hotspots.find((item) => item.id === currentHotspotId) || null : null;
+  }
+
+  function getHotspotGeometry(screenId, hotspot) {
+    const screenOverrides = overrides[screenId] || {};
+    const override = screenOverrides[hotspot.id];
+    return override ? { ...hotspot, ...override } : hotspot;
+  }
+
+  function isHotspotOverridden(screenId, hotspotId) {
+    return !!(overrides[screenId] && overrides[screenId][hotspotId]);
   }
 
   function renderList() {
@@ -76,12 +107,16 @@
     editorHotspotSelect.innerHTML = "";
 
     screen.hotspots.forEach((hotspot, index) => {
+      const geometry = getHotspotGeometry(screen.id, hotspot);
+
       const spotButton = document.createElement("button");
       spotButton.className = "hotspot";
-      spotButton.style.left = `${hotspot.x}%`;
-      spotButton.style.top = `${hotspot.y}%`;
-      spotButton.style.width = `${hotspot.width}%`;
-      spotButton.style.height = `${hotspot.height}%`;
+      if (isHotspotOverridden(screen.id, hotspot.id))
+        spotButton.classList.add("is-overridden");
+      spotButton.style.left = `${geometry.x}%`;
+      spotButton.style.top = `${geometry.y}%`;
+      spotButton.style.width = `${geometry.width}%`;
+      spotButton.style.height = `${geometry.height}%`;
       spotButton.title = hotspot.title;
       spotButton.setAttribute("aria-label", hotspot.title);
       spotButton.dataset.hotspotId = hotspot.id;
@@ -95,6 +130,8 @@
 
       const chip = document.createElement("button");
       chip.className = "hotspot-chip";
+      if (isHotspotOverridden(screen.id, hotspot.id))
+        chip.classList.add("is-overridden");
       chip.dataset.hotspotId = hotspot.id;
       chip.textContent = `${index + 1}. ${hotspot.title}`;
       chip.addEventListener("click", () => selectHotspot(screen, hotspot.id));
@@ -102,7 +139,7 @@
 
       const option = document.createElement("option");
       option.value = hotspot.id;
-      option.textContent = hotspot.title;
+      option.textContent = hotspot.title + (isHotspotOverridden(screen.id, hotspot.id) ? " *" : "");
       editorHotspotSelect.appendChild(option);
     });
 
@@ -137,65 +174,12 @@
     editorPanel.hidden = !enabled;
     editorOverlay.hidden = !enabled;
     editorToggle.textContent = `Modalità editor: ${enabled ? "ON" : "OFF"}`;
-    document.body.classList.toggle("is-editor-mode", enabled);
     updateEditorUI();
   }
 
   function resetEditorPoints() {
     editorPoints = [];
     updateEditorUI();
-  }
-
-  function updateEditorUI() {
-    const hotspot = getCurrentHotspot();
-    const hasScreen = !!getCurrentScreen();
-    editorToggle.disabled = !hasScreen;
-    editorReset.disabled = !editorEnabled;
-    editorCopy.disabled = !(editorEnabled && editorPoints.length === 2 && hotspot);
-
-    if (!editorEnabled) {
-      editorOutput.textContent = "Attiva la modalità editor per misurare un hotspot.";
-      editorHelp.textContent = "Attiva l'editor, scegli un hotspot e clicca il punto in alto a sinistra e poi quello in basso a destra.";
-      editorBox.style.display = "none";
-      editorCrosshair.style.display = "none";
-      return;
-    }
-
-    if (!hotspot) {
-      editorOutput.textContent = "Seleziona un hotspot per iniziare.";
-      return;
-    }
-
-    if (editorPoints.length === 0) {
-      editorHelp.textContent = `Hotspot: ${hotspot.title}. Clicca il punto in alto a sinistra.`;
-      editorOutput.textContent = "In attesa del primo punto.";
-      editorBox.style.display = "none";
-      editorCrosshair.style.display = "none";
-      return;
-    }
-
-    if (editorPoints.length === 1) {
-      const p = editorPoints[0];
-      editorHelp.textContent = `Hotspot: ${hotspot.title}. Ora clicca il punto in basso a destra.`;
-      editorOutput.textContent = `Primo punto: x=${p.x.toFixed(2)} y=${p.y.toFixed(2)}`;
-      positionCrosshair(p);
-      editorBox.style.display = "none";
-      return;
-    }
-
-    const [p1, p2] = editorPoints;
-    const rect = normalizePoints(p1, p2);
-    editorHelp.textContent = `Hotspot: ${hotspot.title}. Coordinate pronte.`;
-    editorOutput.textContent =
-`{
-  "id": "${hotspot.id}",
-  "x": ${rect.x.toFixed(1)},
-  "y": ${rect.y.toFixed(1)},
-  "width": ${rect.width.toFixed(1)},
-  "height": ${rect.height.toFixed(1)}
-}`;
-    positionEditorBox(rect);
-    editorCrosshair.style.display = "none";
   }
 
   function normalizePoints(a, b) {
@@ -220,8 +204,127 @@
     editorBox.style.height = `${rect.height}%`;
   }
 
+  function applyCurrentMeasurement() {
+    const hotspot = getCurrentHotspot();
+    if (!hotspot || editorPoints.length !== 2)
+      return null;
+
+    const rect = normalizePoints(editorPoints[0], editorPoints[1]);
+    if (!overrides[currentScreenId])
+      overrides[currentScreenId] = {};
+    overrides[currentScreenId][hotspot.id] = {
+      x: Number(rect.x.toFixed(1)),
+      y: Number(rect.y.toFixed(1)),
+      width: Number(rect.width.toFixed(1)),
+      height: Number(rect.height.toFixed(1))
+    };
+    persistOverrides();
+    return overrides[currentScreenId][hotspot.id];
+  }
+
+  function exportOverrides() {
+    editorJson.value = JSON.stringify(overrides, null, 2);
+    editorHelp.textContent = "Modifiche locali esportate nel riquadro JSON.";
+  }
+
+  function importOverrides() {
+    try {
+      const parsed = JSON.parse(editorJson.value || "{}");
+      overrides = parsed && typeof parsed === "object" ? parsed : {};
+      persistOverrides();
+      resetEditorPoints();
+      renderScreen(currentScreenId);
+      editorHelp.textContent = "Modifiche importate correttamente.";
+    } catch {
+      editorHelp.textContent = "JSON non valido. Correggilo e riprova.";
+    }
+  }
+
+  function resetCurrentHotspotOverride() {
+    const hotspot = getCurrentHotspot();
+    if (!hotspot || !overrides[currentScreenId])
+      return;
+    delete overrides[currentScreenId][hotspot.id];
+    if (Object.keys(overrides[currentScreenId]).length === 0)
+      delete overrides[currentScreenId];
+    persistOverrides();
+    resetEditorPoints();
+    renderScreen(currentScreenId);
+    editorHelp.textContent = "Override del hotspot rimosso.";
+  }
+
+  function resetAllOverrides() {
+    overrides = {};
+    persistOverrides();
+    resetEditorPoints();
+    renderScreen(currentScreenId);
+    editorJson.value = "";
+    editorHelp.textContent = "Tutte le modifiche locali sono state rimosse.";
+  }
+
+  function updateEditorUI() {
+    const hotspot = getCurrentHotspot();
+    const hasScreen = !!getCurrentScreen();
+    const overridden = hotspot ? isHotspotOverridden(currentScreenId, hotspot.id) : false;
+
+    editorToggle.disabled = !hasScreen;
+    editorReset.disabled = !editorEnabled;
+    editorResetHotspot.disabled = !(editorEnabled && hotspot && overridden);
+    editorResetAll.disabled = !(editorEnabled && Object.keys(overrides).length > 0);
+    editorCopy.disabled = !(editorEnabled && hotspot);
+    editorExport.disabled = !editorEnabled;
+    editorImport.disabled = !editorEnabled;
+
+    if (!editorEnabled) {
+      editorOutput.textContent = "Attiva la modalità editor per misurare un hotspot.";
+      editorHelp.textContent = "Attiva l'editor, scegli un hotspot e clicca il punto in alto a sinistra e poi quello in basso a destra.";
+      editorBox.style.display = "none";
+      editorCrosshair.style.display = "none";
+      return;
+    }
+
+    if (!hotspot) {
+      editorOutput.textContent = "Seleziona un hotspot per iniziare.";
+      return;
+    }
+
+    if (editorPoints.length === 0) {
+      editorHelp.textContent = `Hotspot: ${hotspot.title}. Clicca il punto in alto a sinistra.`;
+      editorOutput.textContent = overridden
+        ? `Override attivo:\n${JSON.stringify(overrides[currentScreenId][hotspot.id], null, 2)}`
+        : "In attesa del primo punto.";
+      editorBox.style.display = "none";
+      editorCrosshair.style.display = "none";
+      return;
+    }
+
+    if (editorPoints.length === 1) {
+      const p = editorPoints[0];
+      editorHelp.textContent = `Hotspot: ${hotspot.title}. Ora clicca il punto in basso a destra.`;
+      editorOutput.textContent = `Primo punto: x=${p.x.toFixed(2)} y=${p.y.toFixed(2)}`;
+      positionCrosshair(p);
+      editorBox.style.display = "none";
+      return;
+    }
+
+    const rect = normalizePoints(editorPoints[0], editorPoints[1]);
+    editorHelp.textContent = `Hotspot: ${hotspot.title}. Coordinate pronte. Usa "Copia coordinate" o passa a un altro hotspot per salvarle.`;
+    editorOutput.textContent =
+`{
+  "screenId": "${currentScreenId}",
+  "hotspotId": "${hotspot.id}",
+  "x": ${rect.x.toFixed(1)},
+  "y": ${rect.y.toFixed(1)},
+  "width": ${rect.width.toFixed(1)},
+  "height": ${rect.height.toFixed(1)}
+}`;
+    positionEditorBox(rect);
+    editorCrosshair.style.display = "none";
+  }
+
   function onEditorOverlayClick(event) {
-    if (!editorEnabled || !image.complete) return;
+    if (!editorEnabled || !image.complete)
+      return;
     const wrapRect = editorOverlay.getBoundingClientRect();
     const x = ((event.clientX - wrapRect.left) / wrapRect.width) * 100;
     const y = ((event.clientY - wrapRect.top) / wrapRect.height) * 100;
@@ -232,11 +335,29 @@
   }
 
   async function copyEditorOutput() {
-    if (!editorOutput.textContent.trim())
+    const hotspot = getCurrentHotspot();
+    if (!hotspot)
       return;
+
+    let payload = editorOutput.textContent.trim();
+    if (editorPoints.length === 2) {
+      const saved = applyCurrentMeasurement();
+      renderScreen(currentScreenId);
+      selectHotspot(getCurrentScreen(), hotspot.id);
+      payload = JSON.stringify({
+        screenId: currentScreenId,
+        hotspotId: hotspot.id,
+        ...saved
+      }, null, 2);
+      editorOutput.textContent = payload;
+    }
+
+    if (!payload)
+      return;
+
     try {
-      await navigator.clipboard.writeText(editorOutput.textContent);
-      editorHelp.textContent = "Coordinate copiate negli appunti.";
+      await navigator.clipboard.writeText(payload);
+      editorHelp.textContent = "Coordinate copiate negli appunti e salvate in locale.";
     } catch {
       editorHelp.textContent = "Copia non riuscita. Copia il blocco manualmente.";
     }
@@ -245,25 +366,32 @@
   editorToggle.addEventListener("click", () => setEditorEnabled(!editorEnabled));
   editorHotspotSelect.addEventListener("change", () => {
     const screen = getCurrentScreen();
-    if (!screen) return;
+    if (!screen)
+      return;
+    if (editorPoints.length === 2)
+      applyCurrentMeasurement();
     resetEditorPoints();
+    renderScreen(currentScreenId);
     selectHotspot(screen, editorHotspotSelect.value);
   });
   editorReset.addEventListener("click", resetEditorPoints);
+  editorResetHotspot.addEventListener("click", resetCurrentHotspotOverride);
+  editorResetAll.addEventListener("click", resetAllOverrides);
   editorCopy.addEventListener("click", copyEditorOutput);
+  editorExport.addEventListener("click", exportOverrides);
+  editorImport.addEventListener("click", importOverrides);
   editorOverlay.addEventListener("click", onEditorOverlayClick);
 
   document.addEventListener("keydown", (event) => {
     const screens = data.screens;
     const currentIndex = screens.findIndex((item) => item.id === currentScreenId);
-    if (currentIndex < 0) return;
+    if (currentIndex < 0)
+      return;
 
-    if (event.key === "ArrowDown" && currentIndex < screens.length - 1) {
+    if (event.key === "ArrowDown" && currentIndex < screens.length - 1)
       renderScreen(screens[currentIndex + 1].id);
-    }
-    if (event.key === "ArrowUp" && currentIndex > 0) {
+    if (event.key === "ArrowUp" && currentIndex > 0)
       renderScreen(screens[currentIndex - 1].id);
-    }
     if (event.key === "Escape" && editorEnabled)
       resetEditorPoints();
   });

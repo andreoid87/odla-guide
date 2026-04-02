@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ODLA GUI Guide</title>
-  <link rel="stylesheet" href="./style.css?v=20260402d">
+  <link rel="stylesheet" href="./style.css?v=20260402e">
 </head>
 <body>
   <div class="layout">
@@ -54,8 +54,15 @@
             </div>
             <div class="editor-actions">
               <button id="editor-reset" class="editor-button" type="button">Reset punti</button>
+              <button id="editor-reset-hotspot" class="editor-button" type="button">Reset hotspot</button>
+              <button id="editor-reset-all" class="editor-button" type="button">Reset tutto</button>
               <button id="editor-copy" class="editor-button" type="button">Copia coordinate</button>
             </div>
+            <div class="editor-actions">
+              <button id="editor-export" class="editor-button" type="button">Esporta modifiche</button>
+              <button id="editor-import" class="editor-button" type="button">Importa modifiche</button>
+            </div>
+            <textarea id="editor-json" class="editor-json" spellcheck="false" placeholder="Qui comparirà il JSON esportato oppure puoi incollare quello da importare."></textarea>
             <pre id="editor-output" class="editor-output">Seleziona un hotspot per iniziare.</pre>
           </div>
         </aside>
@@ -63,7 +70,7 @@
     </main>
   </div>
 
-  <script src="./guide-data.js?v=20260402d"></script>
-  <script src="./guide.js?v=20260402d"></script>
+  <script src="./guide-data.js?v=20260402e"></script>
+  <script src="./guide.js?v=20260402e"></script>
 </body>
 </html>
