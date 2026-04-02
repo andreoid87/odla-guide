@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ODLA GUI Guide</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1>ODLA GUI Guide</h1>
+      <p class="subtitle">Guida visuale interattiva delle finestre ODLA.</p>
+      <p id="screen-counter" class="counter"></p>
+      <nav id="screen-list" class="screen-list" aria-label="Schermate"></nav>
+    </aside>
+
+    <main class="content">
+      <header class="content-header">
+        <div>
+          <h2 id="screen-title">Caricamento</h2>
+          <p id="screen-description" class="screen-description"></p>
+        </div>
+      </header>
+
+      <section class="viewer">
+        <div id="canvas-wrap" class="canvas-wrap">
+          <img id="screen-image" class="screen-image" alt="">
+          <div id="hotspot-layer" class="hotspot-layer"></div>
+        </div>
+
+        <aside id="detail-panel" class="detail-panel">
+          <div class="detail-head">
+            <h3 id="detail-title">Seleziona un'area</h3>
+            <p id="detail-text">Clicca su una zona evidenziata dello screenshot per vedere nome e spiegazione.</p>
+          </div>
+          <div class="detail-meta">
+            <span class="meta-label">Aree interattive</span>
+            <div id="hotspot-list" class="hotspot-list"></div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="./guide-data.js"></script>
+  <script src="./guide.js"></script>
+</body>
+</html>
