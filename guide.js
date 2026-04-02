@@ -13,6 +13,7 @@
   const hotspotList = document.getElementById("hotspot-list");
   const detailTitle = document.getElementById("detail-title");
   const detailText = document.getElementById("detail-text");
+  const editorAvailable = !!document.getElementById("editor-toggle");
   const editorToggle = document.getElementById("editor-toggle");
   const editorPanel = document.getElementById("editor-panel");
   const editorHelp = document.getElementById("editor-help");
@@ -116,7 +117,8 @@
 
     hotspotLayer.innerHTML = "";
     hotspotList.innerHTML = "";
-    editorHotspotSelect.innerHTML = "";
+    if (editorHotspotSelect)
+      editorHotspotSelect.innerHTML = "";
 
     screen.hotspots.forEach((hotspot, index) => {
       const geometry = getHotspotGeometry(screen.id, hotspot);
@@ -149,15 +151,18 @@
       chip.addEventListener("click", () => selectHotspot(screen, hotspot.id));
       hotspotList.appendChild(chip);
 
-      const option = document.createElement("option");
-      option.value = hotspot.id;
-      option.textContent = hotspot.title + (isHotspotOverridden(screen.id, hotspot.id) ? " *" : "");
-      editorHotspotSelect.appendChild(option);
+      if (editorHotspotSelect) {
+        const option = document.createElement("option");
+        option.value = hotspot.id;
+        option.textContent = hotspot.title + (isHotspotOverridden(screen.id, hotspot.id) ? " *" : "");
+        editorHotspotSelect.appendChild(option);
+      }
     });
 
     if (screen.hotspots.length > 0) {
       selectHotspot(screen, screen.hotspots[0].id);
-      editorHotspotSelect.value = screen.hotspots[0].id;
+      if (editorHotspotSelect)
+        editorHotspotSelect.value = screen.hotspots[0].id;
     }
     updateEditorUI();
   }
@@ -198,7 +203,7 @@
     currentHotspotId = hotspot.id;
     detailTitle.textContent = hotspot.title;
     detailText.textContent = hotspot.text;
-    if (editorHotspotSelect.value !== hotspot.id)
+    if (editorHotspotSelect && editorHotspotSelect.value !== hotspot.id)
       editorHotspotSelect.value = hotspot.id;
 
     [...hotspotLayer.querySelectorAll(".hotspot")].forEach((node) => {
@@ -211,6 +216,8 @@
   }
 
   function setEditorEnabled(enabled) {
+    if (!editorAvailable)
+      return;
     editorEnabled = enabled;
     editorPanel.hidden = !enabled;
     editorOverlay.hidden = !enabled;
@@ -219,6 +226,8 @@
   }
 
   function resetEditorPoints() {
+    if (!editorAvailable)
+      return;
     editorPoints = [];
     updateEditorUI();
   }
@@ -232,12 +241,16 @@
   }
 
   function positionCrosshair(point) {
+    if (!editorCrosshair)
+      return;
     editorCrosshair.style.display = "block";
     editorCrosshair.style.left = `${point.x}%`;
     editorCrosshair.style.top = `${point.y}%`;
   }
 
   function positionEditorBox(rect) {
+    if (!editorBox)
+      return;
     editorBox.style.display = "block";
     editorBox.style.left = `${rect.x}%`;
     editorBox.style.top = `${rect.y}%`;
@@ -246,6 +259,8 @@
   }
 
   function applyCurrentMeasurement() {
+    if (!editorAvailable)
+      return null;
     const hotspot = getCurrentHotspot();
     if (!hotspot || editorPoints.length !== 2)
       return null;
@@ -264,6 +279,8 @@
   }
 
   function resetCurrentHotspotOverride() {
+    if (!editorAvailable)
+      return;
     const hotspot = getCurrentHotspot();
     if (!hotspot || !overrides[currentScreenId])
       return;
@@ -277,6 +294,8 @@
   }
 
   function resetAllOverrides() {
+    if (!editorAvailable)
+      return;
     overrides = {};
     persistOverrides();
     resetEditorPoints();
@@ -285,6 +304,8 @@
   }
 
   function confirmCurrentMeasurement() {
+    if (!editorAvailable)
+      return;
     const hotspot = getCurrentHotspot();
     if (!hotspot || editorPoints.length !== 2)
       return;
@@ -300,6 +321,8 @@
   }
 
   function downloadOverrides() {
+    if (!editorAvailable)
+      return;
     const payload = JSON.stringify(overrides, null, 2);
     const blob = new Blob([payload], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -314,6 +337,8 @@
   }
 
   function updateEditorUI() {
+    if (!editorAvailable)
+      return;
     const hotspot = getCurrentHotspot();
     const hasScreen = !!getCurrentScreen();
     const overridden = hotspot ? isHotspotOverridden(currentScreenId, hotspot.id) : false;
@@ -373,6 +398,8 @@
   }
 
   function onEditorOverlayClick(event) {
+    if (!editorAvailable)
+      return;
     if (!editorEnabled || !image.complete)
       return;
     const wrapRect = editorOverlay.getBoundingClientRect();
@@ -389,21 +416,23 @@
     manualZoom = 1;
     applyZoom();
   });
-  editorToggle.addEventListener("click", () => setEditorEnabled(!editorEnabled));
-  editorHotspotSelect.addEventListener("change", () => {
-    const screen = getCurrentScreen();
-    if (!screen)
-      return;
-    resetEditorPoints();
-    renderScreen(currentScreenId);
-    selectHotspot(screen, editorHotspotSelect.value);
-  });
-  editorReset.addEventListener("click", resetEditorPoints);
-  editorConfirm.addEventListener("click", confirmCurrentMeasurement);
-  editorDownload.addEventListener("click", downloadOverrides);
-  editorResetHotspot.addEventListener("click", resetCurrentHotspotOverride);
-  editorResetAll.addEventListener("click", resetAllOverrides);
-  editorOverlay.addEventListener("click", onEditorOverlayClick);
+  if (editorAvailable) {
+    editorToggle.addEventListener("click", () => setEditorEnabled(!editorEnabled));
+    editorHotspotSelect.addEventListener("change", () => {
+      const screen = getCurrentScreen();
+      if (!screen)
+        return;
+      resetEditorPoints();
+      renderScreen(currentScreenId);
+      selectHotspot(screen, editorHotspotSelect.value);
+    });
+    editorReset.addEventListener("click", resetEditorPoints);
+    editorConfirm.addEventListener("click", confirmCurrentMeasurement);
+    editorDownload.addEventListener("click", downloadOverrides);
+    editorResetHotspot.addEventListener("click", resetCurrentHotspotOverride);
+    editorResetAll.addEventListener("click", resetAllOverrides);
+    editorOverlay.addEventListener("click", onEditorOverlayClick);
+  }
   zoomOut.addEventListener("click", () => setManualZoom(getEffectiveScale() - 0.1));
   zoomIn.addEventListener("click", () => setManualZoom(getEffectiveScale() + 0.1));
   zoomFit.addEventListener("click", () => {
@@ -422,7 +451,7 @@
       renderScreen(screens[currentIndex + 1].id);
     if (event.key === "ArrowUp" && currentIndex > 0)
       renderScreen(screens[currentIndex - 1].id);
-    if (event.key === "Escape" && editorEnabled)
+    if (editorAvailable && event.key === "Escape" && editorEnabled)
       resetEditorPoints();
   });
   window.addEventListener("resize", applyZoom);
